@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 
-const useCountdown = (minutes, seconds, isPaused) => {
+const useCountdown = (minutes, seconds, isPaused, setIsPaused) => {
     const [time, setTime] = useState({minutes, seconds});
+    const [cycleCounter, setCycleCounter] = useState(0);
 
     useEffect(() => {
         let timer;
@@ -15,14 +16,17 @@ const useCountdown = (minutes, seconds, isPaused) => {
                         setTime({minutes: time.minutes, seconds: time.seconds - 1})
                     }
                 }, 1000);
+            } else if (time.minutes === 0 && time.seconds === 0) {
+                setCycleCounter(cycleCounter + 1);
+                setTime({minutes, seconds})
+                setIsPaused(true);
             }
         }
 
         return () => clearTimeout(timer);
-    }, [time.minutes, time.seconds, isPaused]);
+    }, [time.minutes, time.seconds, isPaused, setIsPaused, cycleCounter, minutes, seconds]);
 
-
-    return time
+    return { minutes: time.minutes, seconds: time.seconds, cycleCounter };
 }
 
 export default useCountdown;

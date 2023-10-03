@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import ChoiceButton from '../components/ChoiceButton';
 import useCountdown from '../hooks/useCountdown';
 
-const Home = ({ containerBgColor}) => {
+const Home = ({ containerBgColor }) => {
   const [activeButton, setActiveButton] = useState("Pomodoro");
-  const [isPaused, SetIsPaused] = useState(true);
-  const { minutes, seconds } = useCountdown(30, 0, isPaused);
+  const [isPaused, setIsPaused] = useState(true);
+
 
 
 
@@ -28,9 +28,12 @@ const Home = ({ containerBgColor}) => {
     }
   };
 
+
   const toggleStartButton = () => {
-    SetIsPaused(!isPaused);
+    setIsPaused(!isPaused);
   };
+
+  const { minutes, seconds, cycleCounter } = useCountdown(0, 2, isPaused, setIsPaused);
 
   return (
     <div className="w-full max-w-xl bg-white rounded-md bg-opacity-10 text-white">
@@ -65,6 +68,9 @@ const Home = ({ containerBgColor}) => {
           <button style={{
             boxShadow: isPaused ? 'rgb(235, 235, 235) 0px 6px 0px' : ''
           }} className='py-3 px-10 text-custom-white bg-white rounded mt-5 mb-3' onClick={() => { toggleStartButton() }}>{isPaused ? "START" : "PAUSE"}</button>
+        </div>
+        <div>
+          #{cycleCounter}
         </div>
       </div>
     </div>
